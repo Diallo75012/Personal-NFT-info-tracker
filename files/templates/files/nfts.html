@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>NFT RECORD FORM</title>
+    <link rel="stylesheet" href="{% static 'files/css/tablestyle.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'files/css/formstyle.css' %}" type="text/css" />
+  </head>
+  <body>
+	<h1>NFT RECORD FORM</h1>
+    <p>{{ comingup }}</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" action="{% url 'files:nfts' %}">
+    <div class="card">
+        <h2>NFT RECORD FORM</h2>
+        <div class="row">
+        {% for field in form %}
+          <div class="col">
+            <div class="form-group">
+            {% csrf_token %}
+            {{ field.errors }}
+            {% if "followers" in field.label_tag %}
+              <label>Nbr of Followers</label>
+              <p>{{ field }}</p>
+            {% else %}
+              <label>{{ field.label_tag }}</label>
+              <p>{{ field }}</p>
+            {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+          <div class="row">
+            <div class="col">
+              <input type="submit" value="Submit">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <p> </p>
+    <table>
+        <caption>Existing NFT Records</caption>
+        <thead>
+          <tr>
+            <th scope="col">Collection</th>
+            <th scope="col">Price</th>
+            <th scope="col">Max Supply</th>
+            <th scope="col">Nbr Minted</th>
+            <th scope="col">Nbr of Holders</th>
+            <th scope="col">Total Nbr of Followers</th>
+            <th scope="col">Update OR Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for elem in NftInfoTable %}
+          <tr>
+            <td scope="row" data-label="Collection">{{ elem.collection }}</td>
+            <td data-label="Price">{{ elem.price }}</td>
+            <td data-label="Max Supply">{{ elem.max_supply }}</td>
+            <td data-label="Nbr Minted">{{ elem.nbr_minted }}</td>
+            <td data-label="Nbr of Holders">{{ elem.nbr_of_holders }}</td>
+            <td data-label="Total Nbr of Followers">{{ elem.total_number_of_followers }}</td>
+            <td data-label="Update OR Delete"><a id="{{ elem.id }}" href="{% url 'files:nfts_update' pk=elem.id %}">Update NFT Info</a><em> </em><a id="{{ elem.id }}" href="{% url 'files:nfts_delete' pk=elem.id %}">Delete NFT Details</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </body>
+</html>
