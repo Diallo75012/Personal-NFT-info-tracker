@@ -8,13 +8,13 @@ from .forms import NftInfoForm
 
 # Create your views here.
 def nfts(request):
-    comingup = "We are going to show and record user nfts details"
+    comingup = "We are going to show and record user nfts details" # just context testing
     form = NftInfoForm
     NftInfoTable = NftRegistration.objects.all()
     if request.method == 'POST':
-        form= NftInfoForm(request.POST or None)
+        form = NftInfoForm(request.POST or None)
         if form.is_valid():
-            data= form.cleaned_data
+            data = form.cleaned_data
             collection = data.get('collection')
             price = data.get('price')
             max_supply = data.get('max_supply')
@@ -37,8 +37,7 @@ def nfts(request):
         "form": form, "NftInfoTable": NftInfoTable})
 
 def nfts_update(request, pk):
-    id = pk
-    NftUpdated = NftRegistration.objects.get(id=id)
+    NftUpdated = NftRegistration.objects.get(id=pk)
     form = NftInfoForm(instance=NftUpdated)
     if request.method == 'POST':
         form = NftInfoForm(request.POST, instance=NftUpdated)
